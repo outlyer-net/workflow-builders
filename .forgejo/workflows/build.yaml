@@ -1,0 +1,22 @@
+---
+
+name: Build
+
+on:
+  #push:
+  workflow_dispatch:
+
+env:
+  REGISTRY: git.outlyer.net
+
+jobs:
+  release:
+    runs-on: docker
+    steps:
+      #- uses: actions/checkout@v3
+
+      - id: repository
+        run: env
+
+      #- name: Build
+      #  run: ./make.bash
