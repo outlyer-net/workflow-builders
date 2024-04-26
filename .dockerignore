@@ -1,0 +1,4 @@
+*.md
+make.bash
+.forgejo/**
+.github/**
