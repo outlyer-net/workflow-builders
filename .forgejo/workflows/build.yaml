@@ -10,7 +10,7 @@ env:
   REGISTRY: git.outlyer.net
 
 jobs:
-  release:
+  build:
     runs-on: docker
     steps:
       #- uses: actions/checkout@v3
