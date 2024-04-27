@@ -13,13 +13,6 @@ jobs:
   build:
     runs-on: docker
     steps:
-      - name: Login to registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      
       # Installation of official docker, comes with buildkit unlike some versions of Debian
       # https://docs.docker.com/engine/install/debian/
       - run: |
@@ -39,6 +32,14 @@ jobs:
       - run: apt-get update -y
       - run: apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin
 
+      # Requires docker to be installed
+      - name: Login to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
       - uses: actions/checkout@v3
 
       - name: Build
