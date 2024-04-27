@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -e
 
 IMAGE=${IMAGE:-outlyer-net/workflow-builders}
 ACTION=${ACTION:-load}
