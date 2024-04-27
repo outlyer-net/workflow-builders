@@ -37,6 +37,13 @@ if [[ -z $1 ]]; then
     set -- opensuse fedora almalinux
 fi
 
+cat >&2 <<EOF
+Running with:
+ - REGISTRY: $REGISTRY
+ -    IMAGE: $IMAGE
+ -   ACTION: $ACTION
+EOF
+
 for param in "$@" ; do
     case $param in
         opensuse) echo build opensuse/leap 15 suse ;;
