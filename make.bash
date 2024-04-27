@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 IMAGE=${IMAGE:-outlyer-net/workflow-builders}
 ACTION=${ACTION:-load}
 REGISTRY=${REGISTRY:-ghcr.io}
