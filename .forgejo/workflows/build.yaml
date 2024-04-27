@@ -20,4 +20,5 @@ jobs:
           env \
             REGISTRY=${{ env.REGISTRY }} \
             IMAGE=${{ env.GITHUB_REPOSITORY }} \
+            ACTION=push \
             ./make.bash fedora

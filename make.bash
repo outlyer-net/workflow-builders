@@ -46,9 +46,9 @@ EOF
 
 for param in "$@" ; do
     case $param in
-        opensuse) echo build opensuse/leap 15 suse ;;
-        fedora) echo build fedora 39 redhat ;;
-        almalinux) echo build almalinux 9 redhat ;;
+        opensuse) build opensuse/leap 15 suse ;;
+        fedora) build fedora 39 redhat ;;
+        almalinux) build almalinux 9 redhat ;;
         *) echo "Unknown image: $param" >&2 ;;
     esac
 done
