@@ -47,5 +47,12 @@ jobs:
           env \
             REGISTRY=${{ env.REGISTRY }} \
             IMAGE=${{ env.GITHUB_REPOSITORY }} \
+            ACTION=load \
+            ./make.bash fedora
+      - name: Push
+        run: >
+          env \
+            REGISTRY=${{ env.REGISTRY }} \
+            IMAGE=${{ env.GITHUB_REPOSITORY }} \
             ACTION=push \
             ./make.bash fedora
