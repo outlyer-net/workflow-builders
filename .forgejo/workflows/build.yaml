@@ -13,9 +13,8 @@ jobs:
   build:
     runs-on: docker
     steps:
-      - run: >
-          apt-get -y update && \
-            apt-get install -y --no-install-recommends docker
+      - run: |
+          apt-get -y update && apt-get install -y --no-install-recommends docker
       - uses: actions/checkout@v3
 
       - name: Build
