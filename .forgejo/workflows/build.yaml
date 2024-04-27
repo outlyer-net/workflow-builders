@@ -12,6 +12,9 @@ env:
 jobs:
   build:
     runs-on: docker
+    permissions:
+      contents: read
+      packages: write
     steps:
       # Installation of official docker, comes with buildkit unlike some versions of Debian
       # https://docs.docker.com/engine/install/debian/
