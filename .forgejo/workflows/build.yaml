@@ -11,11 +11,27 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: docker
     steps:
-      - run: >
-          apt-get -y update && \
-            apt-get install -y --no-install-recommends docker.io
+      # Installation of official docker, comes with buildkit unlike some versions of Debian
+      # https://docs.docker.com/engine/install/debian/
+      - run: |
+          if ! dpkg -l ca-certificates curl ; then
+            apt-get update -y
+            apt-get install -y --no-install-recommends ca-certificates curl
+          fi
+      - run: |
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          chmod +r /etc/apt/keyrings/docker.asc
+      - run: |
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            tee /etc/apt/sources.list.d/docker.list
+      - run: apt-get update -y
+      - run: apt-get install -y --no-install-recommends docker-buildx-plugin
+      
       - uses: actions/checkout@v3
 
       - name: Build
