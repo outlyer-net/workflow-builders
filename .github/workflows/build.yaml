@@ -25,9 +25,10 @@ jobs:
       # Cross-compatibility with Forgejo:
       #  - Forgejo runners run as root
       #  - GitHub runners don't run as root and uses sudo
+      # If alredy root add a pass-through sudo replacement
       - run: |
           if [[ $(whoami) == 'root' ]] ; then
-            echo -e '!/bin/sh\nexec "$@"' | tee /usr/local/bin/sudo
+            echo -e '#!/bin/sh\nexec "$@"' | tee /usr/local/bin/sudo
             chmod +x /usr/local/bin/sudo
           fi
 
