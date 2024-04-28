@@ -22,6 +22,15 @@ jobs:
       contents: read
       packages: write
     steps:
+      # Cross-compatibility with Forgejo:
+      #  - Forgejo runners run as root
+      #  - GitHub runners don't run as root and uses sudo
+      - run: |
+          if $(whoami) == 'root' ; then
+            echo -e '!/bin/sh\nexec "$@"' | tee /usr/local/bin/sudo
+            chmod +x /usr/local/bin/sudo
+          fi
+
       - run: sudo apt-get update -y
       # Upstream docker packages, not required for now
       #- run: sudo apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin
