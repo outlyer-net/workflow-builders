@@ -17,9 +17,15 @@ build_stage() {
     local dockerfile_prefix=$4
     local wrapper=$5
 
-    $wrapper docker buildx build \
-        --$ACTION \
-        --progress plain \
+    #$wrapper docker buildx build \
+    #    --$ACTION \
+    #    --progress plain \
+
+    if [[ $ACTION = 'load' ]]; then
+        ACTION=build
+    fi
+
+    $wrapper docker $ACTION \
         -f $dockerfile_prefix.Dockerfile \
         . \
         -t ${REGISTRY}/${IMAGE}:${tag_prefix}${tag}-${stage} \
