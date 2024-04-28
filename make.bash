@@ -25,13 +25,18 @@ build_stage() {
         ACTION=build
     fi
 
-    $wrapper docker $ACTION \
-        -f $dockerfile_prefix.Dockerfile \
-        . \
-        -t ${REGISTRY}/${IMAGE}:${tag_prefix}${tag}-${stage} \
-        --target $stage \
-        --build-arg BASE_IMAGE=$base_image \
-        --build-arg BASE_TAG=$tag
+    if [[ $ACTION = 'build' ]]; then
+        $wrapper docker $ACTION \
+            -f $dockerfile_prefix.Dockerfile \
+            . \
+            -t ${REGISTRY}/${IMAGE}:${tag_prefix}${tag}-${stage} \
+            --target $stage \
+            --build-arg BASE_IMAGE=$base_image \
+            --build-arg BASE_TAG=$tag
+    else
+        $wrapper docker $ACTION \
+            -t ${REGISTRY}/${IMAGE}:${tag_prefix}${tag}-${stage}
+    fi
 }
 
 build() {
