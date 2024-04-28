@@ -52,6 +52,7 @@ jobs:
             IMAGE=${{ env.GITHUB_REPOSITORY }} \
             ACTION=load \
             ./make.bash fedora
+      
       - name: Push
         run: >
           env \
