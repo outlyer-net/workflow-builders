@@ -18,6 +18,12 @@ target_fqdn_image() {
     local tag_prefix=$1
     local base_tag=$2
     local tag_suffix=$3
+
+    # Special case
+    if [[ $tag_prefix = 'opensuse/leap' ]]; then
+        tag_prefix='opensuse'
+    fi
+
     echo ${REGISTRY}/${IMAGE}:${tag_prefix}${base_tag}-${tag_suffix}
 }
 
@@ -70,7 +76,7 @@ build_stage() {
         ACTION=build
     fi
 
-    local base_image_id=$(get_upstream_image_id $tag_prefix $tag)
+    local base_image_id=$(get_upstream_image_id $base_image $tag)
     local full_tag=$(target_fqdn_image $base_image $tag $stage)
 
     if [[ $ACTION = 'build' ]]; then
