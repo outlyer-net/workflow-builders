@@ -1,0 +1,65 @@
+---
+
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+  # A schedule will be disabled on GitHub after 60 days of inactivity, my own
+  # Forgejo deployment should run uninterrupted 
+  schedule:
+    - cron: '20 8 * * *'
+
+env:
+  # The image will reside on GHCR even if built elsewhere
+  REGISTRY: ghcr.io
+  REPOSITORY: outlyer-net/workflow-builders # ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - run: sudo apt-get update -y
+      # Upstream docker packages, not required for now
+      #- run: sudo apt-get install -y --no-install-recommends docker-ce-cli docker-buildx-plugin
+      - run: sudo apt-get install -y --no-install-recommends docker.io skopeo
+
+      # docker/login-action requires docker to be installed
+
+      - if: ${{ github.server_url == 'https://github.com' }}
+        name: Login to GHCR from within GitHub
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # For remote login via Forgejo
+      - if: ${{ github.server_url != 'https://github.com' }}
+        name: Login to GHCR (with Personal Access Token)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_PAT }}
+      
+      - uses: actions/checkout@v3
+
+      - name: Build
+        run: >
+          env \
+            REGISTRY=${{ env.REGISTRY }} \
+            IMAGE=${{ env.REPOSITORY }} \
+            ACTION=load \
+            ./make.bash
+      
+      - name: Push
+        run: >
+          env \
+            REGISTRY=${{ env.REGISTRY }} \
+            IMAGE=${{ env.REPOSITORY }} \
+            ACTION=push \
+            ./make.bash
