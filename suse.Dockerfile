@@ -14,11 +14,11 @@ RUN zypper install -y \
 # C, C++ builder, provides compilers and autotools
 FROM runner AS cbuilder
 
-# g++ already drags gcc and make
+# gcc-c++ already drags gcc
 RUN zypper install -y \
         autoconf \
         automake  \
-        g++ \
+        gcc-c++ \
         gcc \
         make \
     && zypper clean -a \

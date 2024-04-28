@@ -21,6 +21,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        target: ['almalinux', 'fedora', 'opensuse']
     steps:
       # Cross-compatibility with Forgejo:
       #  - Forgejo runners run as root
@@ -55,7 +58,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_PAT }}
-      
+
       - uses: actions/checkout@v3
 
       - name: Build
