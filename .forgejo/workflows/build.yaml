@@ -53,6 +53,8 @@ jobs:
             ACTION=load \
             ./make.bash fedora
       
+      - run: docker login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }} git.outlyer.net
+
       - name: Push
         run: >
           env \
